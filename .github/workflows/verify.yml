@@ -60,7 +60,7 @@ jobs:
       # "declaration uses 'sorry'") into a hard failure.
       - name: "G7R-1+2 · lake build --wfail (Mathlib cache)"
         id: lean
-        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+        uses: leanprover/lean-action@ba3fdfe5c4476c925da13bf11a005ddb47e47aee # v1.7.1
         with:
           auto-config: false
           build: true
