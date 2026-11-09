@@ -33,10 +33,10 @@ hand-edited image.
 
 | Checker | Implementation | Role |
 |---------|---------------|------|
-| `nanoda` | independent Lean 4 type checker in **Rust** | re-verifies well-typedness of every declaration with a codebase that shares nothing with the Lean kernel; `sorry` forbidden |
-| `leanchecker` | bundled kernel checker | re-checks every module of project + Mathlib (memory-capped via `LEAN_NUM_THREADS`) |
-| `axiom-audit` | kernel environment walker | axiom surface allowlist |
-| `axiom_gate.py` | `#print axioms` policy | bridge-theorem precision contract |
+| `leanchecker` | bundled kernel checker (**hard gate**) | re-checks every module of project + Mathlib (memory-capped via `LEAN_NUM_THREADS`) |
+| `axiom-audit` | kernel environment walker (**hard gate**) | axiom surface allowlist, built with the project's own pinned toolchain so it speaks the audited kernel's olean format |
+| `axiom_gate.py` | `#print axioms` policy (**hard gate**) | bridge-theorem precision contract |
+| `nanoda` | independent Lean 4 type checker in **Rust** (experimental, best-effort) | re-verifies well-typedness of every declaration with a codebase that shares nothing with the Lean kernel; `sorry` forbidden. Marked `continue-on-error` until upstream `lean-action` fixes module-name detection for top-level TOML lakefiles — the contract never depends on this step |
 
 On failure a labeled issue is filed automatically with run/commit links.
 

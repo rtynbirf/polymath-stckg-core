@@ -45,22 +45,18 @@ jobs:
           lint: false
           use-mathlib-cache: true
 
-      - name: "nanoda — independent Rust type checker (sorry forbidden)"
+      # HARD GATES FIRST — their results must never be skipped due to a
+      # failure of the experimental checker below.
+      - name: "leanchecker — kernel re-check of every module (hard gate)"
         uses: leanprover/lean-action@ba3fdfe5c4476c925da13bf11a005ddb47e47aee # v1.7.1
-        with:
-          auto-config: false
-          nanoda: true
-          nanoda-allow-sorry: false
 
-      - name: "leanchecker — kernel re-check of every module"
-        uses: leanprover/lean-action@ba3fdfe5c4476c925da13bf11a005ddb47e47aee # v1.7.1
         with:
           auto-config: false
           leanchecker: true
         env:
           LEAN_NUM_THREADS: "2"
 
-      - name: "axiom-audit — kernel axiom surface (v0.1.2, SHA-pinned, --modules-from)"
+      - name: "axiom-audit — kernel axiom surface (hard gate, v0.1.2, SHA-pinned)"
         run: |
           set -euo pipefail
           git clone -q --depth 1 --branch v0.1.2 https://github.com/leanprover-community/axiom-audit /tmp/axiom-audit
@@ -74,8 +70,22 @@ jobs:
             --json > axiom-audit.json
           echo "axiom-audit: PASS — axiom surface within Mathlib defaults"
 
-      - name: "axiom precision — bridge theorems policy"
+      - name: "axiom precision — bridge theorems policy (hard gate)"
         run: python3 scripts/axiom_gate.py
+
+      # EXPERIMENTAL (best-effort): nanoda — independent Rust type checker.
+      # continue-on-error until upstream fix: run_nanoda.sh detects the module
+      # name only from a [package] section and cannot read top-level
+      # `name = "..."` TOML lakefiles (leanprover/lean-action issue filed).
+      # The contract does not depend on this step; leanchecker above is the
+      # independent kernel gate.
+      - name: "nanoda — independent Rust type checker (experimental, sorry forbidden)"
+        continue-on-error: true
+        uses: leanprover/lean-action@ba3fdfe5c4476c925da13bf11a005ddb47e47aee # v1.7.1
+        with:
+          auto-config: false
+          nanoda: true
+          nanoda-allow-sorry: false
 
       - name: "File an issue when the battery fails"
         if: failure()
@@ -94,5 +104,5 @@ jobs:
 
           The bridge contract still holds for the last green push — investigate
           whether this is a real integrity regression, a toolchain/cache drift,
-          or an independent-checker compatibility issue (nanoda/leanchecker are
-          new tools and may lag behind toolchain updates)."
+          or an independent-checker compatibility issue (nanoda is experimental
+          and best-effort; leanchecker and axiom-audit are the hard gates)."
