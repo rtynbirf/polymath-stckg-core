@@ -63,7 +63,8 @@ jobs:
       - name: "axiom-audit — kernel axiom surface (v0.1.2, SHA-pinned, --modules-from)"
         run: |
           set -euo pipefail
-          git clone -q --depth 1 https://github.com/leanprover-community/axiom-audit /tmp/axiom-audit
+          git clone -q --depth 1 --branch v0.1.2 https://github.com/leanprover-community/axiom-audit /tmp/axiom-audit
+          git -C /tmp/axiom-audit fetch -q --unshallow 2>/dev/null || true
           git -C /tmp/axiom-audit checkout -q 46024e005996495c65ef609368e11ab39c4222e3 # v0.1.2
           ( cd /tmp/axiom-audit && lake build )
           lake env /tmp/axiom-audit/.lake/build/bin/axiom-audit \
