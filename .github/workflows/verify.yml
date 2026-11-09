@@ -1,0 +1,137 @@
+name: "GATE 7R · push verification"
+
+# Every push replays the full GATE 7R verification protocol as a gate matrix:
+#
+#   G7R-0  Specification     static contracts, no toolchain needed (seconds)
+#   G7R-1  Baseline          toolchain + Mathlib cache (lean-action)
+#   G7R-2  Elaboration       lake build --wfail: zero tolerance, a hidden
+#                            sorry emits a WARNING and fails the build
+#   G7R-3a  Kernel audit     axiom-audit over the COMPILED environment:
+#                            catches sorryAx, Lean.ofReduceBool, home-rolled
+#                            axioms — including ones reaching in via imports
+#   G7R-3b  Axiom precision  #print axioms policy: the 3 new bridge theorems
+#                            (A4, B2, E4) depend on nothing but propext
+#   G7R-3c  Parity           bash integrity scan + 11/11 theorem existence
+#
+# A red badge here means the bridge contract is broken.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: gate7r-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  spec:
+    name: "G7R-0 · Specification"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Specification gate (static, no toolchain)
+        run: python3 scripts/gate_spec.py --json spec.json
+
+      - name: Upload spec report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: spec-report
+          path: spec.json
+          retention-days: 30
+
+  lean-core:
+    name: "G7R-1+2+3 · Baseline, Elaboration & Independent battery"
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # G7R-1+2: official Lean CI action — elan setup, Mathlib cache,
+      # `lake build --wfail`. --wfail turns ANY warning (including
+      # "declaration uses 'sorry'") into a hard failure.
+      - name: "G7R-1+2 · lake build --wfail (Mathlib cache)"
+        id: lean
+        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+        with:
+          auto-config: false
+          build: true
+          build-args: --wfail
+          test: false
+          lint: false
+          use-mathlib-cache: true
+
+      # G7R-3a: kernel-level axiom audit of the compiled environment.
+      # Allowlist = Mathlib defaults (propext, Classical.choice, Quot.sound).
+      - name: "G7R-3a · Kernel axiom audit (axiom-audit)"
+        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+        with:
+          auto-config: false
+          axiom-audit: true
+          axiom-audit-root: RequestProject
+
+      # G7R-3b: #print axioms policy for the 11 bridge theorems.
+      # Contract: A4 / B2 / E4 ⊆ {propext}; legacy 8 ⊆ Mathlib defaults.
+      - name: "G7R-3b · Axiom precision (bridge theorems policy)"
+        run: python3 scripts/axiom_gate.py
+
+      # G7R-3c: same bash checks a human runs locally — CI cannot drift
+      # from what a contributor sees on their machine.
+      - name: "G7R-3c · Integrity scan + theorem existence (parity)"
+        run: |
+          ./scripts/check_integrity.sh
+          ./scripts/verify_theorems.sh
+
+  report:
+    name: "GATE REPORT · badge & artifact"
+    needs: [spec, lean-core]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Download spec report
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: spec-report
+
+      - name: Generate GATE report + badge
+        env:
+          SPEC_RESULT: ${{ needs.spec.result }}
+          LEAN_RESULT: ${{ needs.lean-core.result }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SPEC_JSON: spec.json
+        run: python3 scripts/gate_report.py
+
+      - name: Upload GATE report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: gate-report
+          path: gate-report/
+          retention-days: 90
+
+      - name: Push dynamic badge (main pushes only)
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          chmod +x scripts/push_badge.sh
+          scripts/push_badge.sh "${{ needs.spec.result == 'success' && needs.lean-core.result == 'success' && 'PASS' || 'FAIL' }}"

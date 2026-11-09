@@ -1,0 +1,10 @@
+version: 2
+updates:
+  # World-class practice (recommended by leanprover/lean-action itself):
+  # Lean is under heavy development, stale action versions break CI silently.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "ci"
