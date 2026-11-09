@@ -60,12 +60,18 @@ jobs:
         env:
           LEAN_NUM_THREADS: "2"
 
-      - name: "axiom-audit — kernel axiom surface"
-        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
-        with:
-          auto-config: false
-          axiom-audit: true
-          axiom-audit-root: RequestProject
+      - name: "axiom-audit — kernel axiom surface (v0.1.2, SHA-pinned, --modules-from)"
+        run: |
+          set -euo pipefail
+          git clone -q --depth 1 https://github.com/leanprover-community/axiom-audit /tmp/axiom-audit
+          git -C /tmp/axiom-audit checkout -q 46024e005996495c65ef609368e11ab39c4222e3 # v0.1.2
+          ( cd /tmp/axiom-audit && lake build )
+          lake env /tmp/axiom-audit/.lake/build/bin/axiom-audit \
+            --root RequestProject \
+            --modules-from RequestProject \
+            --allow propext,Classical.choice,Quot.sound \
+            --json > axiom-audit.json
+          echo "axiom-audit: PASS — axiom surface within Mathlib defaults"
 
       - name: "axiom precision — bridge theorems policy"
         run: python3 scripts/axiom_gate.py

@@ -70,13 +70,30 @@ jobs:
           use-mathlib-cache: true
 
       # G7R-3a: kernel-level axiom audit of the compiled environment.
+      # Run directly (not via lean-action input) because this project has no
+      # root module named RequestProject.olean — the tool needs
+      # --modules-from. Pinned to v0.1.2 commit SHA (supply-chain safety).
       # Allowlist = Mathlib defaults (propext, Classical.choice, Quot.sound).
-      - name: "G7R-3a · Kernel axiom audit (axiom-audit)"
-        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+      - name: "G7R-3a · Kernel axiom audit (axiom-audit v0.1.2, SHA-pinned)"
+        run: |
+          set -euo pipefail
+          git clone -q --depth 1 https://github.com/leanprover-community/axiom-audit /tmp/axiom-audit
+          git -C /tmp/axiom-audit checkout -q 46024e005996495c65ef609368e11ab39c4222e3 # v0.1.2
+          ( cd /tmp/axiom-audit && lake build )
+          lake env /tmp/axiom-audit/.lake/build/bin/axiom-audit \
+            --root RequestProject \
+            --modules-from RequestProject \
+            --allow propext,Classical.choice,Quot.sound \
+            --json > axiom-audit.json
+          echo "G7R-3a axiom-audit: PASS — axiom surface within Mathlib defaults"
+
+      - name: Upload axiom audit report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          auto-config: false
-          axiom-audit: true
-          axiom-audit-root: RequestProject
+          name: axiom-audit-report
+          path: axiom-audit.json
+          retention-days: 90
 
       # G7R-3b: #print axioms policy for the 11 bridge theorems.
       # Contract: A4 / B2 / E4 ⊆ {propext}; legacy 8 ⊆ Mathlib defaults.
