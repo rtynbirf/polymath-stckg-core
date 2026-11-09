@@ -100,3 +100,20 @@
 ---
 
 **GATE 7R = PASS. GATE 7 = GREEN. All 11 bridge theorems independently verified.**
+---
+
+## POST-RELEASE CI OBSERVATION (2026-11-10)
+
+The first run of GATE 7R-as-CI found one residual redundancy that the
+independent execution record had normalized differently: in **E4**
+(`toBelief'_not_injective`, `STCKG/Evidence.lean:247`) the `h_ne` proof was
+`simp [EvidenceProfile.blank]; decide`. In the CI environment
+(`leanprover/lean-action@v1.7.0`, toolchain `v4.28.0`, Mathlib cache) `simp`
+already closes the goal, so the trailing `decide` raised
+`No goals to be solved` (the same redundancy class as the B2 first-attempt
+failure above).
+
+**Fix:** removed the trailing `; decide`. The theorem statement, the witness
+and the proof structure are unchanged; `simp [EvidenceProfile.blank]` is the
+complete proof. This is exactly the failure mode the pipeline was built to
+catch — a proof that leans on a tactic-level accident instead of the witness.

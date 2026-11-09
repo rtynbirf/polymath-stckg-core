@@ -244,7 +244,7 @@ theorem toBelief'_not_injective : ¬ Function.Injective RefutableProfile.toBelie
   have h_ne : (⟨{ EvidenceProfile.blank with logicalSupport := .strong }, .absent⟩ :
         RefutableProfile) ≠
       ⟨{ EvidenceProfile.blank with logicalSupport := .moderate }, .absent⟩ := by
-    simp [EvidenceProfile.blank]; decide
+    simp [EvidenceProfile.blank]
   -- CONCLUSION: injectivity would force equal profiles from equal beliefs
   exact h_ne (h h_eq)
 
