@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # GATE 7R STEP 7 — theorem existence check.
 # Each of the 11 bridge theorems must appear EXACTLY ONCE in a .lean file.
+# Uses plain grep (not rg): no external dependency, same behavior locally and in CI.
 set -euo pipefail
 
 THEOREMS=(
@@ -21,7 +22,7 @@ fail=0
 printf "%-42s %s\n" "THEOREM" "MATCHES"
 printf -- "---------------------------------------------------------\n"
 for t in "${THEOREMS[@]}"; do
-  n=$(rg --no-filename -c "theorem ${t}\b" RequestProject --glob '*.lean' | awk '{s+=$1} END {print s+0}')
+  n=$(grep -rE "theorem ${t}\b" RequestProject --include='*.lean' | wc -l)
   status="PASS"
   if [ "$n" -ne 1 ]; then status="FAIL"; fail=1; fi
   printf "%-42s %-3s %s\n" "$t" "$n" "$status"
