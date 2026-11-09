@@ -71,7 +71,11 @@ def main() -> int:
     pattern = re.compile(r"'([^']+)'\s+(?:does not depend on any axioms|depends on axioms:\s*\[([^\]]*)\])")
     deps: dict[str, set[str]] = {}
     for m in pattern.finditer(output):
-        deps[m.group(1)] = set(s.strip() for s in m.group(2).split(",") if s.strip())
+        if m.group(2) is None:
+            # "'name' does not depend on any axioms"
+            deps[m.group(1)] = set()
+        else:
+            deps[m.group(1)] = set(s.strip() for s in m.group(2).split(",") if s.strip())
 
     failed = False
     print(f"{'THEOREM':60s} {'AXIOM DEPS':45s} POLICY  RESULT")
