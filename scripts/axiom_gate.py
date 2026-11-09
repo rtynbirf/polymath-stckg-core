@@ -68,14 +68,17 @@ def main() -> int:
         print(output[-4000:])
         return 1
 
-    pattern = re.compile(r"'([^']+)'\s+(?:does not depend on any axioms|depends on axioms:\s*\[([^\]]*)\])")
+    # Names may contain primes (toBelief'_surjective), so capture lazily and
+    # anchor on the known suffix: the closing quote must be followed by the
+    # "depends on axioms" phrase, which forces the correct split.
+    pattern = re.compile(r"'(.+?)'\s+(does not depend on any axioms|depends on axioms:\s*\[([^\]]*)\])")
     deps: dict[str, set[str]] = {}
     for m in pattern.finditer(output):
-        if m.group(2) is None:
+        if m.group(3) is None:
             # "'name' does not depend on any axioms"
             deps[m.group(1)] = set()
         else:
-            deps[m.group(1)] = set(s.strip() for s in m.group(2).split(",") if s.strip())
+            deps[m.group(1)] = set(s.strip() for s in m.group(3).split(",") if s.strip())
 
     failed = False
     print(f"{'THEOREM':60s} {'AXIOM DEPS':45s} POLICY  RESULT")
