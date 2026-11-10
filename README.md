@@ -1,5 +1,10 @@
 # POLYMATH ST-CKG Core — RELEASE-0.2
 
+<div align="center">
+  <img src="banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
+</div>
+
+
 > **Spatio-Temporal Categorial Knowledge Graph — machine-verified bridge contract.**
 > Every claim in this repository is either proved in Lean 4, marked as a hypothesis,
 > or marked as a structural audit result. Nothing in between.
