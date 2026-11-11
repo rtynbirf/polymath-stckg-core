@@ -4,6 +4,15 @@
   <img src="banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
 </div>
 
+<!--ФОРЖ:МУЗА:НАЧАЛО-->
+<div align="center">
+  <img src="repo-muse.svg" width="100%" alt="Муза polymath-stckg-core: картина кузни ПОЛИМАТ, раунд 9" />
+  <br/>
+  <img src="forge-divider.svg" width="62%" alt="разделитель кузни ПОЛИМАТ" />
+</div>
+<!--ФОРЖ:МУЗА:КОНЕЦ-->
+
+
 
 > **Spatio-Temporal Categorial Knowledge Graph — machine-verified bridge contract.**
 > Every claim in this repository is either proved in Lean 4, marked as a hypothesis,
@@ -158,3 +167,10 @@ MIT — see [LICENSE](LICENSE).
 | Tag | Event |
 |-----|-------|
 | `v0.2.0` | RELEASE-0.2: bridge contract verified (GATE 7R PASS, independent) |
+
+<!--ФОРЖ:ПОДВАЛ-->
+---
+
+<div align="center">
+  <sub>◆ картина и штандарт — ручная ковка <a href="https://github.com/rtynbirf">КУЗНИ ПОЛИМАТ</a> · ЧЕЛОВЕК=АККАУНТ=PID1 ◆</sub>
+</div>
