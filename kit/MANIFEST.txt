@@ -1,0 +1,8 @@
+КОЛЛАЖ-ШТАНДАРТ · РАУНД 12 · REVE=РЕВО
+репо: polymath-stckg-core (№46)
+мастерская: ВАЗАРЕРИ · ТУННЕЛЬ
+
+ST-CKG → Lean 4 bridge contract: 11 machine-verified theorems, 0 sorry, kernel-audited axiom surface. GATE 7R runs as CI — the contract defends itself.
+
+Релиз иммутабелен — набор хранится в репо.
+◆ РЕВО В ОСНОВЕ ВСЕГО · КУЗНЯ ПОЛИМАТ ◆
