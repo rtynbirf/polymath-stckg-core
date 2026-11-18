@@ -1,20 +1,20 @@
 # POLYMATH ST-CKG Core — RELEASE-0.2
 
 <div align="center">
-  <img src="banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
 </div>
 
 <!--ФОРЖ:МУЗА:НАЧАЛО-->
 <div align="center">
-  <img src="repo-muse.svg" width="100%" alt="Муза polymath-stckg-core: мастерская ВАЗАРЕРИ · ТУННЕЛЬ, кузня ПОЛИМАТ, раунд 12 · REVE=РЕВО" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/repo-muse.svg" width="100%" alt="Муза polymath-stckg-core: мастерская ВАЗАРЕРИ · ТУННЕЛЬ, кузня ПОЛИМАТ, раунд 12 · REVE=РЕВО" />
   <br/>
-  <img src="forge-divider.svg" width="62%" alt="делитель мастерской ВАЗАРЕРИ · ТУННЕЛЬ" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/forge-divider.svg" width="62%" alt="делитель мастерской ВАЗАРЕРИ · ТУННЕЛЬ" />
 </div>
 <!--ФОРЖ:МУЗА:КОНЕЦ-->
 
 <!--ФОРЖ:ПАСПОРТ:НАЧАЛО-->
 <div align="center">
-  <img src="revo-page.svg" width="100%" alt="РЕВО-паспорт страницы polymath-stckg-core: строение файлов, лексикон, числа — по фактическому контенту" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/revo-page.svg" width="100%" alt="РЕВО-паспорт страницы polymath-stckg-core: строение файлов, лексикон, числа — по фактическому контенту" />
 </div>
 
 | ФАЙЛОВ | ПАПОК | КОММИТОВ | ОБНОВЛЕНО | РЕЛИЗОВ |
