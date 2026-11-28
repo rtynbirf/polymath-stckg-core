@@ -1,7 +1,7 @@
-# POLYMATH ST-CKG Core — RELEASE-0.2
-
 <div align="center">
-  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
+
+<a href="https://github.com/rtynbirf/polymath-stckg-core"><img src="banner.png" width="100%" alt="polymath-stckg-core — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
 </div>
 
 <!--ФОРЖ:МУЗА:НАЧАЛО-->
@@ -14,13 +14,25 @@
 
 <!--ФОРЖ:ПАСПОРТ:НАЧАЛО-->
 <div align="center">
-  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/revo-page.svg" width="100%" alt="РЕВО-паспорт страницы polymath-stckg-core: строение файлов, лексикон, числа — по фактическому контенту" />
+  <img src="revo-page.svg" width="100%" alt="РЕВО-паспорт страницы polymath-stckg-core №46 в каноне ORNAMENTAL MYTHO-REALISM: орнаментальная решётка, медальон-миф, строение файлов, лексикон — по фактическому контенту" />
 </div>
 
 | ФАЙЛОВ | ПАПОК | КОММИТОВ | ОБНОВЛЕНО | РЕЛИЗОВ |
 |---:|---:|---:|---|---:|
-| 169 | 14 | 32 | 2026-11-16 | 1 |
+| 180 | 16 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
+
+# POLYMATH ST-CKG Core — RELEASE-0.2
+
+<p align="center"><img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/.github/social-preview.png" alt="polymath-stckg-core" width="100%"></p>
+
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/banner.png" width="100%" alt="Штандарт polymath-stckg-core: обсидиан и расплавленное золото, кузня rtynbirf" />
+</div>
+
+
+
+
 
 
 
