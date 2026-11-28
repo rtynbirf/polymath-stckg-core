@@ -22,6 +22,18 @@
 | 180 | 16 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
 
+# polymath-stckg-core
+
+<div align="center">
+
+<a href="https://github.com/rtynbirf/polymath-stckg-core"><img src="banner.png" width="100%" alt="polymath-stckg-core — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
+</div>
+
+
+
+
+
 # POLYMATH ST-CKG Core — RELEASE-0.2
 
 <p align="center"><img src="https://cdn.jsdelivr.net/gh/rtynbirf/polymath-stckg-core@main/.github/social-preview.png" alt="polymath-stckg-core" width="100%"></p>
